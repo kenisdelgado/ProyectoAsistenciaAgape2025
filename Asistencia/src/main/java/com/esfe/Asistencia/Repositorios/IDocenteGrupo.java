@@ -7,6 +7,6 @@ import com.esfe.Asistencia.Modelos.DocenteGrupo;
 
 
 public interface IDocenteGrupo extends JpaRepository<DocenteGrupo, Integer> {
-    
-    Page<DocenteGrupo> findAll(Pageable pageable);
+
+    Page<DocenteGrupo> findByOrdenDocente(Pageable pageable);
 }

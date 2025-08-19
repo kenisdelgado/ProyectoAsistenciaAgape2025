@@ -1,4 +1,6 @@
 package com.esfe.Asistencia.Modelos;
+import org.springframework.data.util.Streamable;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -58,5 +60,10 @@ public class DocenteGrupo {
 
     public void setCiclo(String ciclo) {
         this.ciclo = ciclo;
+    }
+
+    public static Streamable<DocenteGrupo> findById(Integer id2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 }
