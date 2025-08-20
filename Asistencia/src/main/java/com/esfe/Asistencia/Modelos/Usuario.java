@@ -72,7 +72,6 @@ public class Usuario {
         return Id;
     }
 
-    
      // Método para agregar roles
     public void agregar(Rol tempRol) {
         if (Roles == null) {
