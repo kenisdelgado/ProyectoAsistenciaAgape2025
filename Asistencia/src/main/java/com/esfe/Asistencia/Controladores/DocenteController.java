@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.esfe.Asistencia.Modelos.Docente;
 import com.esfe.Asistencia.Servicios.Interfaces.IDocenteService;
-import com.esfe.Utilidades.PdfGeneratorService;
+import com.esfe.Asistencia.Utilidades.PdfGeneratorService;
 
 import jakarta.servlet.http.HttpServletResponse;
 

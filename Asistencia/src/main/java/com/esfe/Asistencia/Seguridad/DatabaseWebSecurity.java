@@ -1,4 +1,5 @@
-package com.esfe.Seguridad;
+package com.esfe.Asistencia.Seguridad;
+
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;

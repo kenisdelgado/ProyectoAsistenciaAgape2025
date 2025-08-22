@@ -1,4 +1,6 @@
 package com.esfe.Asistencia.Modelos;
+import java.util.List;
+
 import org.springframework.data.util.Streamable;
 
 import jakarta.persistence.*;
@@ -62,8 +64,25 @@ public class DocenteGrupo {
         this.ciclo = ciclo;
     }
 
-    public static Streamable<DocenteGrupo> findById(Integer id2) {
+    public List<DocenteGrupo> findAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
+
+    public Object findById(Integer id2) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
+
+    public void deleteById(Integer id2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+    }
+
+    public DocenteGrupo save(DocenteGrupo docenteGrupo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    }
+
+  
 }

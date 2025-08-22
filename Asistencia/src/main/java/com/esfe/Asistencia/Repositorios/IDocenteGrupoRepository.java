@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.esfe.Asistencia.Modelos.DocenteGrupo;
 
 
-public interface IDocenteGrupo extends JpaRepository<DocenteGrupo, Integer> {
+public interface IDocenteGrupoRepository extends JpaRepository<DocenteGrupo,Integer> {
 
-    Page<DocenteGrupo> findByOrdenDocente(Pageable pageable);
+    Page<DocenteGrupo> findByOrderByDocenteDesc(Pageable pageable);
+
 }

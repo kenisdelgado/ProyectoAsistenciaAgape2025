@@ -1,4 +1,5 @@
 package com.esfe.Asistencia.Servicios.Implementaciones;
+
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -8,7 +9,8 @@ import com.esfe.Asistencia.Repositorios.IDocenteRepository;
 import com.esfe.Asistencia.Servicios.Interfaces.IDocenteService;
 
 @Service
-public class DocenteService  implements IDocenteService {
+public class DocenteService implements IDocenteService {
+
     @Autowired
     private IDocenteRepository docenteRepository;
 

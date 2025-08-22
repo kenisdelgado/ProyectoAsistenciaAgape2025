@@ -1,5 +1,6 @@
 package com.esfe.Asistencia.Controladores;
 
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.*;
 
 import com.esfe.Asistencia.Modelos.*;
+import com.esfe.Asistencia.Modelos.DocenteGrupo;
 import com.esfe.Asistencia.Servicios.Interfaces.*;
 
 @Controller
@@ -63,7 +65,7 @@ public class DocenteGrupoController {
     // ----------- EDITAR --------------
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        Optional docenteGrupo = docenteGrupoService.buscarPorId(id);
+        DocenteGrupo docenteGrupo = docenteGrupoService.buscarPorId(id);
         model.addAttribute("docenteGrupo", docenteGrupo);
         model.addAttribute("docentes", docenteService.obtenerTodos());
         model.addAttribute("grupos", grupoService.obtenerTodos());
@@ -74,7 +76,7 @@ public class DocenteGrupoController {
     // ----------- VER (solo lectura) --------------
     @GetMapping("/view/{id}")
     public String view(@PathVariable Integer id, Model model) {
-        Optional docenteGrupo = docenteGrupoService.buscarPorId(id);
+        DocenteGrupo docenteGrupo = docenteGrupoService.buscarPorId(id);
         model.addAttribute("docenteGrupo", docenteGrupo);
         model.addAttribute("docentes", docenteService.obtenerTodos());
         model.addAttribute("grupos", grupoService.obtenerTodos());
@@ -85,7 +87,7 @@ public class DocenteGrupoController {
     // ----------- ELIMINAR (confirmación) --------------
     @GetMapping("/delete/{id}")
     public String deleteConfirm(@PathVariable Integer id, Model model) {
-        Optional docenteGrupo = docenteGrupoService.buscarPorId(id);
+        DocenteGrupo docenteGrupo = docenteGrupoService.buscarPorId(id);
         model.addAttribute("docenteGrupo", docenteGrupo);
         model.addAttribute("docentes", docenteService.obtenerTodos());
         model.addAttribute("grupos", grupoService.obtenerTodos());
@@ -124,7 +126,7 @@ public class DocenteGrupoController {
 
     @PostMapping("/delete")
     public String deleteDocenteGrupo(@ModelAttribute DocenteGrupo docenteGrupo, RedirectAttributes redirect) {
-        docenteGrupoService.eliminar(docenteGrupo.getId());
+        docenteGrupoService.eliminarPorId(docenteGrupo.getId());
         redirect.addFlashAttribute("msg", "Asignación eliminada correctamente");
         return "redirect:/asignaciones";
     }
