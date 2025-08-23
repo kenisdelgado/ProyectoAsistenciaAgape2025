@@ -1,816 +1,331 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>ESFE - ASISTENCIA</title>
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"
-    />
-    <link
-      rel="icon"
-      th:href="@{/assets/img/kaiadmin/favicon.ico}"
-      type="image/x-icon"
-    />
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Administración</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+body { font-family: 'Playfair Display', serif; }
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); justify-content: center; align-items: center; }
+.modal-content { background-color: #fff; padding: 24px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; width: 90%; }
+</style>
+</head>
+<body class="bg-[#F8F4EF] min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
 
-    <!-- Fonts and icons -->
-    <script th:src="@{/assets/js/plugin/webfont/webfont.min.js}"></script>
+<div class="text-center mb-10">
+    <h1 class="text-4xl font-bold text-gray-700">PANEL DE ADMINISTRACIÓN</h1>
+    <p class="text-xl font-medium text-[#7C9A92] mt-2">Bienvenid@</p>
+</div>
 
-        <!-- Sweet Alert -->
-    <script th:src="@{/assets/js/plugin/sweetalert/sweetalert.min.js}"></script>
-    
-    <script>
-      WebFont.load({
-        google: { families: ["Public Sans:300,400,500,600,700"] },
-        custom: {
-          families: [
-            "Font Awesome 5 Solid",
-            "Font Awesome 5 Regular",
-            "Font Awesome 5 Brands",
-            "simple-line-icons",
-          ],
-          urls: ["assets/css/fonts.min.css"],
-        },
-        active: function () {
-          sessionStorage.fonts = true;
-        },
-      });
-    </script>
+<div id="appContainer" class="w-full max-w-4xl flex flex-col items-center"></div>
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}" />
-    <link rel="stylesheet" th:href="@{/assets/css/plugins.min.css}" />
-    <link rel="stylesheet" th:href="@{/assets/css/kaiadmin.min.css}" />
-
- 
-  </head>
-  <body>
-    <div class="wrapper">
-      <!-- Sidebar -->
-      <div class="sidebar" data-background-color="dark">
-        <div class="sidebar-logo">
-          <!-- Logo Header -->
-          <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
-              <img
-                th:src="@{/assets/img/kaiadmin/logo_light.svg}"
-                alt="navbar brand"
-                class="navbar-brand"
-                height="20"
-              />
-            </a>
-            <div class="nav-toggle">
-              <button class="btn btn-toggle toggle-sidebar">
-                <i class="gg-menu-right"></i>
-              </button>
-              <button class="btn btn-toggle sidenav-toggler">
-                <i class="gg-menu-left"></i>
-              </button>
-            </div>
-            <button class="topbar-toggler more">
-              <i class="gg-more-vertical-alt"></i>
-            </button>
-          </div>
-          <!-- End Logo Header -->
+<div id="confirmationModal" class="modal">
+    <div class="modal-content">
+        <p id="modalMessage" class="text-lg font-medium text-gray-800 mb-6"></p>
+        <div class="flex justify-center space-x-4">
+            <button id="confirmBtn" class="px-6 py-2 rounded-full text-white bg-red-600 hover:bg-red-700">Eliminar</button>
+            <button id="cancelBtn" class="px-6 py-2 rounded-full text-gray-700 bg-gray-200 hover:bg-gray-300">Cancelar</button>
         </div>
-        <div class="sidebar-wrapper scrollbar scrollbar-inner">
-          <div class="sidebar-content">
-            <ul class="nav nav-secondary">
-              <li class="nav-item active">
-                <a
-                  data-bs-toggle="collapse"
-                  href="#dashboard"
-                  class="collapsed"
-                  aria-expanded="false"
-                >
-                  <i class="fas fa-home"></i>
-                  <p>Dashboard</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="dashboard">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a th:href="@{/}">
-                        <span class="sub-item">Dashboard</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-             
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#base">
-                  <i class="fas fa-layer-group"></i>
-                  <p>Mantenimiento</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="base">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a th:href="@{/grupos}">
-                        <span class="sub-item">Grupos</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a th:href="@{/docentes}">
-                        <span class="sub-item">Docentes</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a th:href="@{/asignaciones}">
-                        <span class="sub-item">Asignaciones</span>
-                      </a>
-                    </li>
-                  
-                   
-                  </ul>
-                </div>
-              </li>
-          
-             
-            </ul>
-          </div>
-        </div>
-      </div>
-      <!-- End Sidebar -->
-
-      <div class="main-panel">
-        <div class="main-header">
-          <div class="main-header-logo">
-            <!-- Logo Header -->
-            <div class="logo-header" data-background-color="dark">
-              <a href="index.html" class="logo">
-                <img
-                  th:src="@{/assets/img/kaiadmin/logo_light.svg}"
-                  alt="navbar brand"
-                  class="navbar-brand"
-                  height="20"
-                />
-              </a>
-              <div class="nav-toggle">
-                <button class="btn btn-toggle toggle-sidebar">
-                  <i class="gg-menu-right"></i>
-                </button>
-                <button class="btn btn-toggle sidenav-toggler">
-                  <i class="gg-menu-left"></i>
-                </button>
-              </div>
-              <button class="topbar-toggler more">
-                <i class="gg-more-vertical-alt"></i>
-              </button>
-            </div>
-            <!-- End Logo Header -->
-          </div>
-          <!-- Navbar Header -->
-          <nav
-            class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom"
-          >
-            <div class="container-fluid">
-              <nav
-                class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex"
-              >
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <button type="submit" class="btn btn-search pe-1">
-                      <i class="fa fa-search search-icon"></i>
-                    </button>
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Search ..."
-                    class="form-control"
-                  />
-                </div>
-              </nav>
-
-              <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                <li
-                  class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none"
-                >
-                  <a
-                    class="nav-link dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    role="button"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                  >
-                    <i class="fa fa-search"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-search animated fadeIn">
-                    <form class="navbar-left navbar-form nav-search">
-                      <div class="input-group">
-                        <input
-                          type="text"
-                          placeholder="Search ..."
-                          class="form-control"
-                        />
-                      </div>
-                    </form>
-                  </ul>
-                </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="messageDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-envelope"></i>
-                  </a>
-                  <ul
-                    class="dropdown-menu messages-notif-box animated fadeIn"
-                    aria-labelledby="messageDropdown"
-                  >
-                    <li>
-                      <div
-                        class="dropdown-title d-flex justify-content-between align-items-center"
-                      >
-                        Messages
-                        <a href="#" class="small">Mark all as read</a>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="message-notif-scroll scrollbar-outer">
-                        <div class="notif-center">
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                th:src="@{/assets/img/jm_denis.jpg}"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Jimmy Denis</span>
-                              <span class="block"> How are you ? </span>
-                              <span class="time">5 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                th:src="@{/assets/img/chadengle.jpg}"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Chad</span>
-                              <span class="block"> Ok, Thanks ! </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                th:src="@{/assets/img/mlane.jpg}"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Jhon Doe</span>
-                              <span class="block">
-                                Ready for the meeting today...
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                th:src="@{/assets/img/talha.jpg}"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="subject">Talha</span>
-                              <span class="block"> Hi, Apa Kabar ? </span>
-                              <span class="time">17 minutes ago</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="see-all" href="javascript:void(0);"
-                        >See all messages<i class="fa fa-angle-right"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="notifDropdown"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fa fa-bell"></i>
-                    <span class="notification">4</span>
-                  </a>
-                  <ul
-                    class="dropdown-menu notif-box animated fadeIn"
-                    aria-labelledby="notifDropdown"
-                  >
-                    <li>
-                      <div class="dropdown-title">
-                        You have 4 new notification
-                      </div>
-                    </li>
-                    <li>
-                      <div class="notif-scroll scrollbar-outer">
-                        <div class="notif-center">
-                          <a href="#">
-                            <div class="notif-icon notif-primary">
-                              <i class="fa fa-user-plus"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> New user registered </span>
-                              <span class="time">5 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-success">
-                              <i class="fa fa-comment"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Rahmad commented on Admin
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-img">
-                              <img
-                                th:src="@{/assets/img/profile2.jpg}"
-                                alt="Img Profile"
-                              />
-                            </div>
-                            <div class="notif-content">
-                              <span class="block">
-                                Reza send messages to you
-                              </span>
-                              <span class="time">12 minutes ago</span>
-                            </div>
-                          </a>
-                          <a href="#">
-                            <div class="notif-icon notif-danger">
-                              <i class="fa fa-heart"></i>
-                            </div>
-                            <div class="notif-content">
-                              <span class="block"> Farrah liked Admin </span>
-                              <span class="time">17 minutes ago</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <a class="see-all" href="javascript:void(0);"
-                        >See all notifications<i class="fa fa-angle-right"></i>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item topbar-icon dropdown hidden-caret">
-                  <a
-                    class="nav-link"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false"
-                  >
-                    <i class="fas fa-layer-group"></i>
-                  </a>
-                  <div class="dropdown-menu quick-actions animated fadeIn">
-                    <div class="quick-actions-header">
-                      <span class="title mb-1">Quick Actions</span>
-                      <span class="subtitle op-7">Shortcuts</span>
-                    </div>
-                    <div class="quick-actions-scroll scrollbar-outer">
-                      <div class="quick-actions-items">
-                        <div class="row m-0">
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div class="avatar-item bg-danger rounded-circle">
-                                <i class="far fa-calendar-alt"></i>
-                              </div>
-                              <span class="text">Calendar</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-warning rounded-circle"
-                              >
-                                <i class="fas fa-map"></i>
-                              </div>
-                              <span class="text">Maps</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div class="avatar-item bg-info rounded-circle">
-                                <i class="fas fa-file-excel"></i>
-                              </div>
-                              <span class="text">Reports</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-success rounded-circle"
-                              >
-                                <i class="fas fa-envelope"></i>
-                              </div>
-                              <span class="text">Emails</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-primary rounded-circle"
-                              >
-                                <i class="fas fa-file-invoice-dollar"></i>
-                              </div>
-                              <span class="text">Invoice</span>
-                            </div>
-                          </a>
-                          <a class="col-6 col-md-4 p-0" href="#">
-                            <div class="quick-actions-item">
-                              <div
-                                class="avatar-item bg-secondary rounded-circle"
-                              >
-                                <i class="fas fa-credit-card"></i>
-                              </div>
-                              <span class="text">Payments</span>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-
-                <li class="nav-item topbar-user dropdown hidden-caret">
-                  <a
-                    class="dropdown-toggle profile-pic"
-                    data-bs-toggle="dropdown"
-                    href="#"
-                    aria-expanded="false"
-                  >
-                    <div class="avatar-sm">
-                      <img
-                        th:src="@{/assets/img/profile.jpg}"
-                        alt="..."
-                        class="avatar-img rounded-circle"
-                      />
-                    </div>
-                    <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
-                    </span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-user animated fadeIn">
-                    <div class="dropdown-user-scroll scrollbar-outer">
-                      <li>
-                        <div class="user-box">
-                          <div class="avatar-lg">
-                            <img
-                              src="assets/img/profile.jpg"
-                              alt="image profile"
-                              class="avatar-img rounded"
-                            />
-                          </div>
-                          <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
-                            <a
-                              href="profile.html"
-                              class="btn btn-xs btn-secondary btn-sm"
-                              >View Profile</a
-                            >
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
-                        <a class="dropdown-item" href="#">My Balance</a>
-                        <a class="dropdown-item" href="#">Inbox</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Account Setting</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
-                      </li>
-                    </div>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          </nav>
-          <!-- End Navbar -->
-        </div>
-
-        <div class="container">
-          <div class="page-inner">
-            
-            <div layout:fragment="content">
-
-            </div>
-        
-          </div>
-        </div>
-
-        <footer class="footer">
-          <div class="container-fluid d-flex justify-content-between">
-            <nav class="pull-left">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="http://www.themekita.com">
-                    ThemeKita
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Help </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Licenses </a>
-                </li>
-              </ul>
-            </nav>
-            <div class="copyright">
-              2024, made with <i class="fa fa-heart heart text-danger"></i> by
-              <a href="http://www.themekita.com">ThemeKita</a>
-            </div>
-            <div>
-              Distributed by
-              <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-            </div>
-          </div>
-        </footer>
-      </div>
-
-      <!-- Custom template | don't include it in your project! -->
-      <div class="custom-template">
-        <div class="title">Settings</div>
-        <div class="custom-content">
-          <div class="switcher">
-            <div class="switch-block">
-              <h4>Logo Header</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="selected changeLogoHeaderColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="purple"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="light-blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="green"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="orange"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="red"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="white"
-                ></button>
-                <br />
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="dark2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="purple2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="light-blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="green2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="orange2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeLogoHeaderColor"
-                  data-color="red2"
-                ></button>
-              </div>
-            </div>
-            <div class="switch-block">
-              <h4>Navbar Header</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="purple"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="light-blue"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="green"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="orange"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="red"
-                ></button>
-                <button
-                  type="button"
-                  class="selected changeTopBarColor"
-                  data-color="white"
-                ></button>
-                <br />
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="dark2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="purple2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="light-blue2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="green2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="orange2"
-                ></button>
-                <button
-                  type="button"
-                  class="changeTopBarColor"
-                  data-color="red2"
-                ></button>
-              </div>
-            </div>
-            <div class="switch-block">
-              <h4>Sidebar</h4>
-              <div class="btnSwitch">
-                <button
-                  type="button"
-                  class="changeSideBarColor"
-                  data-color="white"
-                ></button>
-                <button
-                  type="button"
-                  class="selected changeSideBarColor"
-                  data-color="dark"
-                ></button>
-                <button
-                  type="button"
-                  class="changeSideBarColor"
-                  data-color="dark2"
-                ></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="custom-toggle">
-          <i class="icon-settings"></i>
-        </div>
-      </div>
-      <!-- End Custom template -->
     </div>
-    <!--   Core JS Files   -->
-    <script th:src="@{/assets/js/core/jquery-3.7.1.min.js}"></script>
-    <script th:src="@{/assets/js/core/popper.min.js}"></script>
-    <script th:src="@{/assets/js/core/bootstrap.min.js}"></script>
+</div>
 
-    <!-- jQuery Scrollbar -->
-    <script th:src="@{/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js}"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    <!-- Chart JS -->
-    <script th:src="@{/assets/js/plugin/chart.js/chart.min.js}"></script>
+// Configura Firebase
+const firebaseConfig = {
+    apiKey: "TU_API_KEY",
+    authDomain: "TU_AUTH_DOMAIN",
+    projectId: "TU_PROJECT_ID",
+    storageBucket: "TU_STORAGE_BUCKET",
+    messagingSenderId: "TU_MESSAGING_SENDER_ID",
+    appId: "TU_APP_ID"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-    <!-- jQuery Sparkline -->
-      <script th:src="@{/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js}"></script>
+let userId = null;
+let teachers = [], assignments = [], users = [];
+let currentEditingItem = { teachers: null, assignments: null, users: null };
 
-    <!-- Chart Circle -->
-    <script th:src="@{/assets/js/plugin/chart-circle/circles.min.js}"></script>
+// Modal
+const confirmationModal = document.getElementById('confirmationModal');
+const modalMessage = document.getElementById('modalMessage');
+const confirmBtn = document.getElementById('confirmBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const showConfirmationModal = (message, onConfirm) => {
+    modalMessage.textContent = message;
+    confirmationModal.style.display = 'flex';
+    confirmBtn.onclick = () => { onConfirm(); confirmationModal.style.display='none'; };
+    cancelBtn.onclick = () => { confirmationModal.style.display='none'; };
+};
 
-    <!-- Datatables -->
-    <script th:src="@{/assets/js/plugin/datatables/datatables.min.js}"></script>
+// LOGIN
+const showLogin = async (errorMessage = '') => {
+    const appContainer = document.getElementById('appContainer');
 
-    <!-- Bootstrap Notify -->
-    <script th:src="@{/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js}"></script>
+    // Traer usuario y contraseña guardados
+    const savedUsername = localStorage.getItem('savedUsername') || '';
+    const savedPassword = localStorage.getItem('savedPassword') || '';
 
-    <!-- jQuery Vector Maps -->
-    <script th:src="@{/assets/js/plugin/jsvectormap/jsvectormap.min.js}"></script>
-    <script th:src="@{/assets/js/plugin/jsvectormap/world.js}"></script>
+    appContainer.innerHTML = `
+        <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-sm">
+            <h2 class="text-2xl font-bold text-gray-700 mb-6 text-center">Acceso Requerido</h2>
+            <form id="loginForm" class="space-y-6">
+                <input type="text" id="usernameInput" placeholder="Usuario" required class="w-full px-4 py-2 border rounded-full" value="${savedUsername}">
+                <input type="password" id="passwordInput" placeholder="Contraseña" required class="w-full px-4 py-2 border rounded-full" value="${savedPassword}">
+                ${errorMessage ? `<p class="text-red-500 text-sm text-center">${errorMessage}</p>` : ''}
+                <button type="submit" class="w-full py-3 px-5 rounded-full bg-green-500 text-white font-bold">ACCEDER</button>
+            </form>
+        </div>
+    `;
 
+    document.getElementById('loginForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const username = document.getElementById('usernameInput').value;
+        const password = document.getElementById('passwordInput').value;
 
+        if(username === "Admin" && password === "123456789") {
+            localStorage.setItem('savedUsername', username);
+            localStorage.setItem('savedPassword', password);
+            userId = "demoUser";
+            showPanel();
+        } else {
+            showLogin("Usuario o contraseña incorrectos.");
+        }
+    });
+};
 
-    <!-- Kaiadmin JS -->
-    <script th:src="@{/assets/js/kaiadmin.min.js}"></script>
+// Funciones de renderizado
+const renderTeachersTable = () => {
+    const tbody = document.getElementById('teachersTableBody'); if(!tbody) return;
+    tbody.innerHTML = teachers.map(t => `
+        <tr data-id="${t.id}">
+            <td class="px-6 py-4">${t.name}</td>
+            <td class="px-6 py-4">${t.group}</td>
+            <td class="px-6 py-4">
+                <button class="edit-btn text-[#7C9A92] mr-2">Editar</button>
+                <button class="delete-btn text-red-600">Eliminar</button>
+            </td>
+        </tr>`).join('');
+};
+const renderAssignmentsTable = () => {
+    const tbody = document.getElementById('assignmentsTableBody'); if(!tbody) return;
+    tbody.innerHTML = assignments.map(a => `
+        <tr data-id="${a.id}">
+            <td class="px-6 py-4">${a.teacher}</td>
+            <td class="px-6 py-4">${a.group}</td>
+            <td class="px-6 py-4">${a.subject}</td>
+            <td class="px-6 py-4">
+                <button class="edit-btn text-[#7C9A92] mr-2">Editar</button>
+                <button class="delete-btn text-red-600">Eliminar</button>
+            </td>
+        </tr>`).join('');
+};
+const renderUsersTable = () => {
+    const tbody = document.getElementById('usersTableBody'); if(!tbody) return;
+    tbody.innerHTML = users.map(u => `
+        <tr data-id="${u.id}">
+            <td class="px-6 py-4">${u.name}</td>
+            <td class="px-6 py-4">${u.email}</td>
+            <td class="px-6 py-4">${u.role}</td>
+            <td class="px-6 py-4">
+                <button class="edit-btn text-[#7C9A92] mr-2">Editar</button>
+                <button class="delete-btn text-red-600">Eliminar</button>
+            </td>
+        </tr>`).join('');
+};
 
- 
-    <script>
-      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#177dff",
-        fillColor: "rgba(23, 125, 255, 0.14)",
-      });
+// PANEL DE ADMINISTRACIÓN
+const showPanel = () => {
+    const appContainer = document.getElementById('appContainer');
+    appContainer.innerHTML = `
+        <div class="flex flex-wrap justify-center space-x-4 mb-10">
+            <button id="teachersBtn" class="px-6 py-3 rounded-full bg-green-500 text-white">Grupo y Docentes</button>
+            <button id="assignmentsBtn" class="px-6 py-3 rounded-full bg-gray-200 text-gray-700">Asignaciones</button>
+            <button id="usersBtn" class="px-6 py-3 rounded-full bg-gray-200 text-gray-700">Usuarios</button>
+        </div>
+        <div id="contentContainer"></div>
+    `;
 
-      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#f3545d",
-        fillColor: "rgba(243, 84, 93, .14)",
-      });
+    const contentContainer = document.getElementById('contentContainer');
+    const teachersBtn = document.getElementById('teachersBtn');
+    const assignmentsBtn = document.getElementById('assignmentsBtn');
+    const usersBtn = document.getElementById('usersBtn');
 
-      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#ffa534",
-        fillColor: "rgba(255, 165, 52, .14)",
-      });
-    </script>
-  </body>
+    const sections = {
+        teachers: `<div class="p-8 bg-white rounded-3xl shadow-xl w-full">
+                <h2 class="text-2xl font-bold mb-4">Gestión de Docentes</h2>
+                <form id="teacherForm" class="space-y-4">
+                    <input type="text" id="teacherName" placeholder="Nombre del docente" required class="w-full px-4 py-2 border rounded-full">
+                    <input type="text" id="teacherGroup" placeholder="Grupo asignado" required class="w-full px-4 py-2 border rounded-full">
+                    <button type="submit" id="submitTeacherBtn" class="w-full py-3 px-5 rounded-full bg-green-500 text-white font-bold">Agregar Docente</button>
+                </form>  
+                <table class="min-w-full divide-y divide-gray-200 mt-4">
+                    <thead><tr><th>Nombre</th><th>Grupo</th><th>Acciones</th></tr></thead>
+                    <tbody id="teachersTableBody"></tbody>
+                </table>
+            </div>`,
+        assignments: `<div class="p-8 bg-white rounded-3xl shadow-xl w-full">
+                <h2 class="text-2xl font-bold mb-4">Gestión de Asignaciones</h2>
+                <form id="assignmentForm" class="space-y-4">
+                    <input type="text" id="assignmentTeacher" placeholder="Docente" required class="w-full px-4 py-2 border rounded-full">
+                    <input type="text" id="assignmentGroup" placeholder="Grupo" required class="w-full px-4 py-2 border rounded-full">
+                    <input type="text" id="assignmentSubject" placeholder="Materia" required class="w-full px-4 py-2 border rounded-full">
+                    <button type="submit" class="w-full py-3 px-5 rounded-full bg-green-500 text-white font-bold">Agregar Asignación</button>
+                </form>
+                <table class="min-w-full divide-y divide-gray-200 mt-4">
+                    <thead><tr><th>Docente</th><th>Grupo</th><th>Materia</th><th>Acciones</th></tr></thead>
+                    <tbody id="assignmentsTableBody"></tbody>
+                </table>
+            </div>`,
+        users: `<div class="p-8 bg-white rounded-3xl shadow-xl w-full">
+                <h2 class="text-2xl font-bold mb-4">Gestión de Usuarios</h2>
+                <form id="userForm" class="space-y-4">
+                    <input type="text" id="userName" placeholder="Nombre" required class="w-full px-4 py-2 border rounded-full">
+                    <input type="email" id="userEmail" placeholder="Correo" required class="w-full px-4 py-2 border rounded-full">
+                    <select id="userRole" class="w-full px-4 py-2 border rounded-full"><option>Administrador</option><option>Usuario</option></select>
+                    <button type="submit" class="w-full py-3 px-5 rounded-full bg-green-500 text-white font-bold">Agregar Usuario</button>
+                </form>
+                <table class="min-w-full divide-y divide-gray-200 mt-4">
+                    <thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Acciones</th></tr></thead>
+                    <tbody id="usersTableBody"></tbody>
+                </table>
+            </div>`
+    };
+
+    const switchContent = (section) => {
+        contentContainer.innerHTML = sections[section];
+        teachersBtn.className = "px-6 py-3 rounded-full bg-gray-200 text-gray-700";
+        assignmentsBtn.className = "px-6 py-3 rounded-full bg-gray-200 text-gray-700";
+        usersBtn.className = "px-6 py-3 rounded-full bg-gray-200 text-gray-700";
+        if(section==='teachers') teachersBtn.className="px-6 py-3 rounded-full bg-green-500 text-white";
+        if(section==='assignments') assignmentsBtn.className="px-6 py-3 rounded-full bg-green-500 text-white";
+        if(section==='users') usersBtn.className="px-6 py-3 rounded-full bg-green-500 text-white";
+        setupEventListeners(section);
+    };
+
+    teachersBtn.onclick = () => switchContent('teachers');
+    assignmentsBtn.onclick = () => switchContent('assignments');
+    usersBtn.onclick = () => switchContent('users');
+
+    // Eventos de agregar, editar y eliminar
+    const setupEventListeners = (section) => {
+        if(section==='teachers'){
+            const form = document.getElementById('teacherForm');
+            form.onsubmit = async e => {
+                e.preventDefault();
+                const name = document.getElementById('teacherName').value;
+                const group = document.getElementById('teacherGroup').value;
+                if(currentEditingItem.teachers){
+                    const ref = doc(db, `users/${userId}/teachers/${currentEditingItem.teachers.id}`);
+                    await updateDoc(ref, {name, group});
+                    currentEditingItem.teachers=null;
+                } else {
+                    await addDoc(collection(db, `users/${userId}/teachers`), {name, group});
+                }
+                form.reset();
+            };
+            document.querySelectorAll('.edit-btn').forEach((btn, i) => {
+                btn.onclick = ()=>{ 
+                    const t=teachers[i];
+                    document.getElementById('teacherName').value=t.name;
+                    document.getElementById('teacherGroup').value=t.group;
+                    currentEditingItem.teachers=t;
+                };
+            });
+            document.querySelectorAll('.delete-btn').forEach((btn, i)=>{
+                btn.onclick=()=>showConfirmationModal("¿Eliminar docente?", async ()=>{ 
+                    await deleteDoc(doc(db, `users/${userId}/teachers/${teachers[i].id}`));
+                });
+            });
+        }
+        if(section==='assignments'){
+            const form = document.getElementById('assignmentForm');
+            form.onsubmit = async e => {
+                e.preventDefault();
+                const teacher = document.getElementById('assignmentTeacher').value;
+                const group = document.getElementById('assignmentGroup').value;
+                const subject = document.getElementById('assignmentSubject').value;
+                if(currentEditingItem.assignments){
+                    const ref = doc(db, `users/${userId}/assignments/${currentEditingItem.assignments.id}`);
+                    await updateDoc(ref, {teacher, group, subject});
+                    currentEditingItem.assignments=null;
+                } else {
+                    await addDoc(collection(db, `users/${userId}/assignments`), {teacher, group, subject});
+                }
+                form.reset();
+            };
+            document.querySelectorAll('.edit-btn').forEach((btn, i) => {
+                btn.onclick = ()=>{ 
+                    const a=assignments[i];
+                    document.getElementById('assignmentTeacher').value=a.teacher;
+                    document.getElementById('assignmentGroup').value=a.group;
+                    document.getElementById('assignmentSubject').value=a.subject;
+                    currentEditingItem.assignments=a;
+                };
+            });
+            document.querySelectorAll('.delete-btn').forEach((btn, i)=>{
+                btn.onclick=()=>showConfirmationModal("¿Eliminar asignación?", async ()=>{ 
+                    await deleteDoc(doc(db, `users/${userId}/assignments/${assignments[i].id}`));
+                });
+            });
+        }
+        if(section==='users'){
+            const form = document.getElementById('userForm');
+            form.onsubmit = async e => {
+                e.preventDefault();
+                const name = document.getElementById('userName').value;
+                const email = document.getElementById('userEmail').value;
+                const role = document.getElementById('userRole').value;
+                if(currentEditingItem.users){
+                    const ref = doc(db, `users/${userId}/users/${currentEditingItem.users.id}`);
+                    await updateDoc(ref, {name,email,role});
+                    currentEditingItem.users=null;
+                } else {
+                    await addDoc(collection(db, `users/${userId}/users`), {name,email,role});
+                }
+                form.reset();
+            };
+            document.querySelectorAll('.edit-btn').forEach((btn, i) => {
+                btn.onclick = ()=>{ 
+                    const u=users[i];
+                    document.getElementById('userName').value=u.name;
+                    document.getElementById('userEmail').value=u.email;
+                    document.getElementById('userRole').value=u.role;
+                    currentEditingItem.users=u;
+                };
+            });
+            document.querySelectorAll('.delete-btn').forEach((btn, i)=>{
+                btn.onclick=()=>showConfirmationModal("¿Eliminar usuario?", async ()=>{ 
+                    await deleteDoc(doc(db, `users/${userId}/users/${users[i].id}`));
+                });
+            });
+        }
+    };
+
+    // Suscripciones a Firestore
+    onSnapshot(collection(db, `users/${userId}/teachers`), snapshot => {
+        teachers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderTeachersTable();
+    });
+    onSnapshot(collection(db, `users/${userId}/assignments`), snapshot => {
+        assignments = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderAssignmentsTable();
+    });
+    onSnapshot(collection(db, `users/${userId}/users`), snapshot => {
+        users = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        renderUsersTable();
+    });
+
+    switchContent('teachers');
+};
+
+// Inicializa login
+showLogin();
+</script>
+</body>
 </html>

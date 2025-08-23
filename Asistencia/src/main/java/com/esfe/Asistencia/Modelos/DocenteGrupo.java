@@ -1,28 +1,18 @@
 package com.esfe.Asistencia.Modelos;
-import java.util.List;
-
-import org.springframework.data.util.Streamable;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "docentes_grupos")
+@Table(name = "docente_grupo")
 public class DocenteGrupo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "docente_id")
-    private Docente docente;
-
-    @ManyToOne
-    @JoinColumn(name = "grupo_id")
-    private Grupo grupo;
-
-    private int anio;
-
-    private String ciclo;
+    @NotBlank(message = "El nombre es requerido")
+    private String nombre;
 
     public Integer getId() {
         return id;
@@ -32,57 +22,11 @@ public class DocenteGrupo {
         this.id = id;
     }
 
-    public Docente getDocente() {
-        return docente;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setDocente(Docente docente) {
-        this.docente = docente;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
-
-    public Grupo getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Grupo grupo) {
-        this.grupo = grupo;
-    }
-
-    public int getAnio() {
-        return anio;
-    }
-
-    public void setAnio(int anio) {
-        this.anio = anio;
-    }
-
-    public String getCiclo() {
-        return ciclo;
-    }
-
-    public void setCiclo(String ciclo) {
-        this.ciclo = ciclo;
-    }
-
-    public List<DocenteGrupo> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
-    }
-
-    public Object findById(Integer id2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
-
-    public void deleteById(Integer id2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
-    }
-
-    public DocenteGrupo save(DocenteGrupo docenteGrupo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
-    }
-
-  
 }

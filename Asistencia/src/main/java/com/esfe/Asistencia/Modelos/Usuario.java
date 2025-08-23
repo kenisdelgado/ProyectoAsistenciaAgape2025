@@ -1,83 +1,44 @@
 package com.esfe.Asistencia.Modelos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
 import java.util.*;
 
 @Entity
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
-    @NotBlank(message = "El nombre es requirido")
-    private String Login;
+    @NotBlank(message = "El nombre es requerido")
+    private String login;
 
-    @NotBlank(message = "La Contraseña es requirida")
-    private String Clave;
+    @NotBlank(message = "La contraseña es requerida")
+    private String clave;
 
-    private int Status;
-
-    public void setId(Integer id) {
-        Id = id;
-    }
-
-    public String getLogin() {
-        return Login;
-    }
-
-    public void setLogin(String login) {
-        Login = login;
-    }
-
-    public String getClave() {
-        return Clave;
-    }
-
-    public void setClave(String clave) {
-        Clave = clave;
-    }
-
-    public int getStatus() {
-        return Status;
-    }
-
-    public void setStatus(int status) {
-        Status = status;
-    }
-
-    public List<Rol> getRoles() {
-        return Roles;
-    }
-
-    public void setRoles(List<Rol> roles) {
-        Roles = roles;
-    }
+    private int status;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "usuario_rol",
-    joinColumns = @JoinColumn(name = "usuario_id"),
-    inverseJoinColumns = @JoinColumn(name = "rol_id"))
-    private List<Rol> Roles;
+    @JoinTable(
+        name = "usuario_rol",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private List<Rol> roles;
 
-    public Integer getId(){
-        return Id;
+    // Getters y setters
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+    public String getLogin() { return login; }
+    public void setLogin(String login) { this.login = login; }
+    public String getClave() { return clave; }
+    public void setClave(String clave) { this.clave = clave; }
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
+    public List<Rol> getRoles() { return roles; }
+    public void setRoles(List<Rol> roles) { this.roles = roles; }
+    public void agregarRol(Rol rol) {
+        if (roles == null) roles = new LinkedList<>();
+        roles.add(rol);
     }
-
-     // Método para agregar roles
-    public void agregar(Rol tempRol) {
-        if (Roles == null) {
-            Roles = new LinkedList<>();
-        }
-        Roles.add(tempRol);
-    }
-
 }

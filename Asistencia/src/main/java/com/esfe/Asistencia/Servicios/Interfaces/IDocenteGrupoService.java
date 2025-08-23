@@ -1,23 +1,16 @@
 package com.esfe.Asistencia.Servicios.Interfaces;
 
-import java.util.*;
-
-
+import com.esfe.Asistencia.Modelos.DocenteGrupo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.esfe.Asistencia.Modelos.DocenteGrupo;
-
+import java.util.List;
+import java.util.Optional;
 
 public interface IDocenteGrupoService {
-
-    List<DocenteGrupo> obtenerTodos();
-
-    Page<DocenteGrupo> buscarTodosPaginados(Pageable pageable);
-
-    DocenteGrupo buscarPorId(Integer id);
-
-    DocenteGrupo crearOEditar(DocenteGrupo docenteGrupo);
-
-    void eliminarPorId(Integer id);
+    List<DocenteGrupo> findAll();
+    Page<DocenteGrupo> findAll(Pageable pageable);
+    Optional<DocenteGrupo> findById(Integer id);
+    DocenteGrupo save(DocenteGrupo docenteGrupo);
+    void deleteById(Integer id);
 }

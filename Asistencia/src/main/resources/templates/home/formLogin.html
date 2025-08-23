@@ -5,29 +5,83 @@
     <title>LogIn</title>
     <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <link th:href="@{/css/login.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: #f7f7f7;
+        }
+        .login-box {
+            margin-top: 75px;
+            background: #fff;
+            text-align: center;
+            box-shadow: 0px 0px 10px 0px #0000001a;
+            border-radius: 10px;
+            padding: 40px 30px;
+        }
+        .login-key {
+            font-size: 60px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .login-title {
+            font-size: 30px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+        .form-control-label {
+            font-size: 16px;
+            color: #333;
+            font-weight: 500;
+        }
+        .login-button .btn {
+            width: 100%;
+            font-size: 18px;
+            border-radius: 25px;
+        }
+        .loginbttm {
+            margin-top: 30px;
+        }
+        .login-text {
+            color: #e74c3c;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h2 class="login-title">ADMIN PANEL</h2>
-
-    <form th:action="@{/login}" method="post">
-        <div class="form-group">
-            <label>Usuario</label>
-            <input type="text" name="username" class="form-control">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 login-box">
+            <div class="login-key">
+                <i class="fa fa-key" aria-hidden="true"></i>
+            </div>
+            <div class="login-title">
+                ADMIN PANEL
+            </div>
+            <div class="login-form">
+                <form th:action="@{/login}" method="post">
+                    <div class="form-group">
+                        <label class="form-control-label">Usuario</label>
+                        <input type="text" name="username" class="form-control" placeholder="Ingrese su usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">Clave</label>
+                        <input type="password" name="password" class="form-control" placeholder="Ingrese su clave" required>
+                    </div>
+                    <div class="loginbttm row">
+                        <div class="col-6 login-btm login-text">
+                            <p th:if="${param.error}" class="text-danger">Usuario o clave incorrecta</p>
+                            <p th:if="${param.logout}" class="text-success">Sesión cerrada correctamente</p>
+                        </div>
+                        <div class="col-6 login-btm login-button">
+                            <button type="submit" class="btn btn-outline-primary">LOGIN</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Clave</label>
-            <input type="password" name="password" class="form-control" />
-        </div>
-
-        <div>
-            <button type="submit" class="btn btn-outline-primary">LOGIN</button>
-        </div>
-
-        <!-- Mensajes -->
-        <div th:if="${param.error}" style="color:red;">Credenciales incorrectas</div>
-        <div th:if="${param.logout}" style="color:green;">Sesión cerrada</div>
-    </form>
+    </div>
 </div>
 </body>
 </html>
